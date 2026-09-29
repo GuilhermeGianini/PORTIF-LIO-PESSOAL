@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Praça das Lojas</title>
+    <style>
+        :root {
+            --bg: #dceff5;
+            --ink: #1d2b3a;
+            --card: #fff;
+            --line: #c7dce5;
+            --gold: #f2b632;
+            --gold-d: #9a6b00;
+            --up: #c2410c;
+            --down: #15803d;
+            --a: #2f8f5b;
+            --b: #f08a24
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            min-height: 100vh
+        }
+
+        body.feira {
+            --a: #2f8f5b;
+            --b: #f08a24
+        }
+
+        body.mercado {
+            --a: #1f6fb2;
+            --b: #f2b632
+        }
+
+        body.shopping {
+            --a: #6b3fa0;
+            --b: #d4a017
+        }
+
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: var(--card);
+            border-bottom: 2px solid var(--line)
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px
+        }
+
+        .wallet {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .coins {
+            background: var(--gold);
+            color: #3b2a00;
+            font-weight: 700;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 18px
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: 0;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-weight: 700;
+            background: var(--a);
+            color: #fff
+        }
+
+        button:hover {
+            filter: brightness(1.1)
+        }
+
+        button:focus-visible {
+            outline: 3px solid var(--ink);
+            outline-offset: 2px
+        }
+
+        button.alt {
+            background: #fff;
+            color: var(--ink);
+            border: 2px solid var(--line)
+        }
+
+        button:disabled {
+            opacity: .4;
+            cursor: not-allowed
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            padding: 16px 20px 0;
+            flex-wrap: wrap
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 150px;
+            background: #fff;
+            color: var(--ink);
+            border: 2px solid var(--line);
+            padding: 12px;
+            text-align: left
+        }
+
+        .tab small {
+            display: block;
+            font-weight: 400;
+            opacity: .75
+        }
+
+        .tab.on {
+            border-color: var(--ink);
+            box-shadow: 0 4px 0 var(--ink)
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 16px 20px 30px;
+            max-width: 1200px;
+            margin: auto
+        }
+
+        @media(max-width:820px) {
+            main {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .awning {
+            height: 34px;
+            border-radius: 12px 12px 0 0;
+            background: repeating-linear-gradient(90deg, var(--a) 0 32px, #fff 32px 64px);
+            border: 2px solid var(--ink);
+            border-bottom: 0
+        }
+
+        .shop {
+            background: var(--card);
+            border: 2px solid var(--ink);
+            border-radius: 0 0 12px 12px;
+            padding: 16px
+        }
+
+        .shop h2 {
+            margin: 0 0 2px;
+            font-size: 20px
+        }
+
+        .shop p {
+            margin: 0 0 14px;
+            font-size: 14px;
+            opacity: .8
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 12px
+        }
+
+        .item {
+            border: 2px solid var(--line);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center
+        }
+
+        .item .ic {
+            font-size: 38px
+        }
+
+        .item b {
+            display: block;
+            margin: 4px 0
+        }
+
+        .price {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--gold-d)
+        }
+
+        .trend {
+            font-size: 13px;
+            font-weight: 700
+        }
+
+        .trend.up {
+            color: var(--up)
+        }
+
+        .trend.down {
+            color: var(--down)
+        }
+
+        .trend.flat {
+            opacity: .6
+        }
+
+        .bar {
+            height: 6px;
+            background: var(--line);
+            border-radius: 4px;
+            margin: 8px 0;
+            overflow: hidden
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            background: var(--b);
+            transition: width .4s
+        }
+
+        aside {
+            background: var(--card);
+            border: 2px solid var(--ink);
+            border-radius: 12px;
+            padding: 16px;
+            align-self: start
+        }
+
+        aside h2 {
+            margin: 0 0 8px;
+            font-size: 18px
+        }
+
+        .inv {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: 14px
+        }
+
+        .inv .pl {
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .total {
+            margin-top: 10px;
+            font-weight: 700
+        }
+
+        .empty {
+            opacity: .7;
+            font-size: 14px
+        }
+
+        dialog {
+            border: 2px solid var(--ink);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 380px
+        }
+
+        dialog::backdrop {
+            background: rgba(29, 43, 58, .5)
+        }
+
+        .pack {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid var(--line);
+            border-radius: 10px;
+            margin: 8px 0
+        }
+
+        .note {
+            font-size: 12px;
+            opacity: .75
+        }
+
+        #toast {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
+            transform: translateX(-50%);
+            background: var(--ink);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 999px;
+            opacity: 0;
+            transition: opacity .25s;
+            pointer-events: none
+        }
+
+        #toast.show {
+            opacity: 1
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                transition: none !important
+            }
+        }
+    </style>
+</head>
+
+<body class="mercado">
+    <header>
+        <h1>🏘️ Praça das Lojas</h1>
+        <div class="wallet">
+            <span class="coins" id="coins">🪙 0</span>
+            <button id="btnBuy">Comprar moedas</button>
+        </div>
+    </header>
+    <nav id="tabs"></nav>
+    <main>
+        <section>
+            <div class="awning"></div>
+            <div class="shop">
+                <h2 id="shopName"></h2>
+                <p id="shopDesc"></p>
+                <div class="grid" id="grid"></div>
+            </div>
+        </section>
+        <aside>
+            <h2>🎒 Inventário</h2>
+            <div id="inv"></div>
+            <div class="total" id="total"></div>
+        </aside>
+    </main>
+
+    <dialog id="dlg">
+        <h2 style="margin-top:0">Comprar moedas</h2>
+        <p class="note">Simulação para a apresentação: nenhum pagamento real é feito.</p>
+        <div id="packs"></div>
+        <button class="alt" id="closeDlg">Fechar</button>
+    </dialog>
+    <div id="toast" role="status"></div>
+
+    <script>
+        // ---------- Dados ----------
+        const SHOPS = {
+            feira: {
+                nome: "🥕 Feira", desc: "Preços baixos, ideal para quem está começando com pouco capital.",
+                itens: [["🍎", "Maçãs", 3], ["🍌", "Bananas", 2], ["🥚", "Ovos caipiras", 8], ["👕", "Camiseta usada", 15], ["🧀", "Queijo artesanal", 20], ["🏺", "Cerâmica", 25]]
+            },
+            mercado: {
+                nome: "🛒 Mercado", desc: "Ponto de encontro dos investidores de capital médio.",
+                itens: [["🍚", "Arroz 5kg", 30], ["☕", "Café premium", 45], ["🎧", "Fone de ouvido", 120], ["🎒", "Mochila", 180], ["👟", "Tênis", 250], ["📚", "Livro raro", 300]]
+            },
+            shopping: {
+                nome: "🏬 Shopping", desc: "Produtos de alto valor para investidores de grande capital.",
+                itens: [["⌚", "Relógio", 1800], ["📱", "Smartphone", 2500], ["💻", "Notebook", 3000], ["🎮", "Console", 3200], ["👜", "Bolsa de grife", 4000], ["💍", "Joia", 6000]]
+            }
+        };
+        const PACKS = [[20, 200], [50, 550], [100, 1200], [500, 6500]]; // [R$, moedas]
+
+        const state = { coins: 50, shop: "mercado", inv: {}, items: {} };
+        for (const [k, s] of Object.entries(SHOPS)) {
+            s.itens.forEach(([ic, nome, base], i) => {
+                state.items[k + i] = { id: k + i, shop: k, ic, nome, base, price: base, prev: base, demand: 0 };
+            });
+        }
+
+        // ---------- Helpers ----------
+        const $ = id => document.getElementById(id);
+        const fmt = n => Math.round(n).toLocaleString("pt-BR");
+        const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+        let toastTimer;
+        function toast(msg) {
+            const t = $("toast");
+            t.textContent = msg;
+            t.classList.add("show");
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
+        }
+
+        // ---------- Ações ----------
+        function buy(id) {
+            const it = state.items[id], cost = Math.round(it.price);
+            if (state.coins < cost) return toast("Moedas insuficientes. Compre mais moedas.");
+            state.coins -= cost;
+            const inv = state.inv[id] || (state.inv[id] = { qty: 0, spent: 0 });
+            inv.qty++;
+            inv.spent += cost;
+            it.prev = it.price;
+            it.demand += 1;                    // compra aumenta a demanda
+            it.price = clamp(it.price * 1.06, it.base * 0.5, it.base * 3);
+            toast(`Comprou ${it.nome} por ${fmt(cost)} moedas`);
+            render();
+        }
+
+        function sell(id) {
+            const it = state.items[id], inv = state.inv[id];
+            if (!inv || !inv.qty) return;
+            const gain = Math.round(it.price);
+            state.coins += gain;
+            inv.spent -= inv.spent / inv.qty;
+            inv.qty--;
+            if (!inv.qty) delete state.inv[id];
+            it.prev = it.price;
+            it.demand -= 0.5;                  // venda reduz a demanda
+            it.price = clamp(it.price * 0.96, it.base * 0.5, it.base * 3);
+            toast(`Vendeu ${it.nome} por ${fmt(gain)} moedas`);
+            render();
+        }
+
+        function addCoins(reais, moedas) {
+            state.coins += moedas;
+            $("dlg").close();
+            toast(`+${fmt(moedas)} moedas (simulado: R$ ${reais})`);
+            render();
+        }
+
+        // Mercado dinâmico: a cada 4s o preço tende ao valor definido pela demanda, com ruído
+        setInterval(() => {
+            for (const it of Object.values(state.items)) {
+                it.prev = it.price;
+                const alvo = it.base * (1 + it.demand * 0.15);
+                const ruido = (Math.random() - 0.5) * 0.04 * it.base;
+                it.price = clamp(it.price + (alvo - it.price) * 0.25 + ruido, it.base * 0.5, it.base * 3);
+                it.demand *= 0.85;               // a demanda esfria com o tempo
+            }
+            render();
+        }, 4000);
+
+        // ---------- Interface ----------
+        function render() {
+            document.body.className = state.shop;
+            $("coins").textContent = "🪙 " + fmt(state.coins);
+
+            $("tabs").innerHTML = Object.entries(SHOPS).map(([k, s]) =>
+                `<button class="tab ${k === state.shop ? "on" : ""}" data-shop="${k}">${s.nome}<small>${s.desc.split(",")[0].split(".")[0]}</small></button>`
+            ).join("");
+
+            const s = SHOPS[state.shop];
+            $("shopName").textContent = s.nome;
+            $("shopDesc").textContent = s.desc;
+
+            $("grid").innerHTML = Object.values(state.items).filter(i => i.shop === state.shop).map(it => {
+                const diff = (it.price - it.base) / it.base * 100;
+                const ch = it.price - it.prev;
+                const cls = ch > 0.01 ? "up" : ch < -0.01 ? "down" : "flat";
+                const arrow = ch > 0.01 ? "▲" : ch < -0.01 ? "▼" : "■";
+                const heat = clamp(50 + diff, 5, 100);
+                return `<div class="item">
+      <div class="ic">${it.ic}</div><b>${it.nome}</b>
+      <div class="price">🪙 ${fmt(it.price)}</div>
+      <div class="trend ${cls}">${arrow} ${diff >= 0 ? "+" : ""}${diff.toFixed(1)}% vs. base</div>
+      <div class="bar" title="Nível de demanda"><i style="width:${heat}%"></i></div>
+      <button data-buy="${it.id}" ${state.coins < Math.round(it.price) ? "disabled" : ""}>Comprar</button>
+    </div>`;
+            }).join("");
+
+            const ids = Object.keys(state.inv);
+            let total = 0;
+            $("inv").innerHTML = ids.length ? ids.map(id => {
+                const it = state.items[id], inv = state.inv[id];
+                const valor = it.price * inv.qty;
+                total += valor;
+                const pl = valor - inv.spent;
+                return `<div class="inv">
+      <div>${it.ic} ${it.nome} ×${inv.qty}<br><span class="pl" style="color:${pl >= 0 ? "var(--down)" : "var(--up)"}">${pl >= 0 ? "+" : ""}${fmt(pl)} moedas</span></div>
+      <button class="alt" data-sell="${id}">Vender ${fmt(it.price)}</button>
+    </div>`;
+            }).join("") : `<p class="empty">Inventário vazio. Compre um produto em qualquer loja.</p>`;
+            $("total").textContent = "Valor do inventário: 🪙 " + fmt(total);
+        }
+
+        document.addEventListener("click", e => {
+            const t = e.target.closest("button");
+            if (!t) return;
+            if (t.dataset.shop) { state.shop = t.dataset.shop; render(); }
+            else if (t.dataset.buy) buy(t.dataset.buy);
+            else if (t.dataset.sell) sell(t.dataset.sell);
+        });
+
+        $("btnBuy").onclick = () => {
+            $("packs").innerHTML = PACKS.map(([r, m]) =>
+                `<div class="pack"><span>🪙 ${fmt(m)} moedas</span><button data-pack="${r}">R$ ${r}</button></div>`
+            ).join("");
+            $("dlg").showModal();
+        };
+
+        $("packs").addEventListener("click", e => {
+            const r = e.target.dataset.pack;
+            if (!r) return;
+            const p = PACKS.find(p => p[0] == r);
+            addCoins(p[0], p[1]);
+        });
+
+        $("closeDlg").onclick = () => $("dlg").close();
+        render();
+    </script>
+</body>
+
+</html>
